@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WindowsBASE- Menedżer pobierania</title>
+
+    <script src="./bin/jquery.min.js" type="text/javascript"></script>
+    <link href="./styles/style.css" rel="stylesheet">
+    <script src="./bin/clipboard.min.js"></script>
+
+</head>
+<body>
+    <script>
+
+// CHECK  UPDATE VERSION
+
+// CREATE LOADER PAGE
+
+    $('body').append('<div style="" id="loadingDiv"><div class="loader"></div><span id="loader_info">Sprawdzanie aktualizacji...</span></div>');
+      $(window).on('load', function(){
+
+        function updateAPP() {
+  $( "#loader_info" ).text('Pobieranie aktualizacji programu. Proszę czekać . . .');
+
+
+        const run_update2 = url.format({
+        pathname: path.join(__dirname, '/bin/updateapp.exe')
+        })
+
+        const exec = require('child_process').exec;
+
+        function execute(command, callback) {
+          exec(command, (error, stdout, stderr) => { 
+          callback(stdout); 
+        });
+        };
+
+        setTimeout(run_updateapp, 3000);
+        
+        function run_updateapp() {
+          execute(run_update2, (output) => {
+  
+          $( "#loader_info" ).css("display", "none"); 
+          
+        });
+        }
+}
+
+function updateDB() {
+  $( "#loader_info" ).text('Pobieranie aktualizacji bazy. Proszę czekać . . .');
+
+const run_update1 = url.format({
+pathname: path.join(__dirname, '/bin/updatedb.exe')
+})
+
+const exec = require('child_process').exec;
+
+function execute(command, callback) {
+  exec(command, (error, stdout, stderr) => { 
+  callback(stdout); 
+});
+};
+
+setTimeout(run_updatedb, 1000);
+
+function run_updatedb() {
+  execute(run_update1, (output) => {
+
+ $( "#loader_info" ).css("display", "none"); 
+//  window.location = 'index.html';
+
+  });
+}
+}
+
+
+const path = require("path");
+const url = require('url')
+const { app, shell } = require("electron");
+var dirname = process.env.INIT_CWD
+
+var latestAppVersion;
+var latestDBVersion;
+
+  function readDbVer() {
+    
+    jQuery.get("./data/dbv.txt", function(text1) {
+      var latestDBVersion = text1;
+      const linkDb = 'https://windowsbase.pl/uploads/app/updates/dbv.txt';
+      $.ajax({ url: linkDb })
+      .done(data => {
+      if ( data > latestDBVersion)  {
+        // updateDB();
+        setTimeout(updateDB, 1000);
+      }
+      else {
+        setTimeout(removeLoader, 5000); 
+      }
+    });
+    }
+    )};
+    
+    readDbVer();
+    
+  function readAppVer() {
+
+jQuery.get("./data/appv.txt", function(text2) {
+  var latestAppVersion = text2;
+  const linkApp = 'https://windowsbase.pl/uploads/app/updates/appv.txt';
+  $.ajax({ url: linkApp })
+      .done(data2 => {
+        if (data2 > latestAppVersion)  {
+        // updateAPP();
+        setTimeout(updateAPP, 1000);
+      } 
+      else {
+        setTimeout(removeLoader, 5000); 
+      }
+    });
+}
+)};
+
+readAppVer();
+      
+
+  });
+
+  // setTimeout(removeLoader, 10000); 
+  
+
+  function removeLoader(){
+    $("body").css("overflow-x", "hidden");
+    $( "#loader_info" ).css("display", "none"); 
+    window.location = 'index.html';
+    //  $("body").css("overflow-y", "scroll");
+      }
+
+    </script>
+
+<div class="loader"></div>
+
+<div id="dialog_bkg"></div>
+
+</body>
+</html>

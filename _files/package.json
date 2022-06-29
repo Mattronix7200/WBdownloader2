@@ -1,0 +1,28 @@
+{
+  "name": "wbdownloader",
+  "version": "2.0.0",
+  "description": "Pobieraj pliki z serwisu WindowsBASE.pl",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "WindowsBASE.pl",
+  "license": "CC0-1.0",
+  "devDependencies": {
+    "electron": "^18.2.3",
+    "electron-packager": "^15.5.1"
+  },
+  "dependencies": {
+    "clipboard": "^2.0.11",
+    "clipboard-event": "^1.5.0",
+    "clipboardy": "^3.0.0",
+    "electron-clipboard-extended": "^1.1.1",
+    "electron-clipboard-watcher": "^1.0.1",
+    "file-system": "^1.2.2",
+    "node-html-parser": "^5.3.3",
+    "readline-sync": "^1.4.10",
+    "shell": "^0.9.4",
+    "shelljs": "^0.8.5",
+    "uniq": "^1.0.1"
+  }
+}

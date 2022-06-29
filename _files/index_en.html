@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="pl-PL">
+  <head>
+    <meta charset="UTF-8">
+    <title>WindowsBASE.pl- Download Manager</title>
+    <script src="./bin/jquery.min.js" type="text/javascript"></script>
+    <link href="./styles/style.css" rel="stylesheet">
+    <script src="./bin/clipboard.min.js"></script>
+    <script src="./data/mydata.js"></script>
+    <script defer src="renderer.js"></script>
+
+  </head>
+  <body>
+  
+   <script>
+      $('body').append('<div style="" id="loadingDiv"><div class="loader"></div><span id="loader_info">Loading application...</span></div>');
+      $(window).on('load', function(){
+      setTimeout(removeLoader, 1000); 
+      });
+
+   function removeLoader(){
+         $("body").css("overflow-y", "scroll");
+         $("body").css("overflow-x", "hidden");
+         $( "#loadingDiv" ).fadeOut(500, function() {
+         $( "#loadingDiv" ).css("display", "none");
+         $( ".loader" ).css("display", "none"); 
+         $( "#loader_info" ).css("display", "none"); 
+      });  
+      }
+   </script>
+
+   <div class="loader"></div>
+
+
+    <div id="dialog_bkg"></div>
+
+    <div class="header">
+
+
+
+<div style="display: flex; flex-flow: row wrap; width: 100%; max-width:100%; height: 60px;">
+      <div style="width:30%; max-width: 100%;">
+         <img class="logo" src="./images/logo.png" />
+      </div>
+
+      <div style="width:10%; max-width:100%;"></div>
+
+      <div style="width:60%; max-width:100%; display: flex; flex-flow: row wrap;">
+         <span id="menubtn_b1"><img class="menu_icon mi_1" src="./images/search.png"></img></span>
+         <span id="menubtn_b2"><img class="menu_icon mi_2" src="./images/repair-tools.png"></img></span>
+         <span id="menubtn_b4"><img class="menu_icon mi_4" src="./images/newspaper.png"></img></span>
+         <span id="menubtn_b6"><img class="menu_icon mi_6" src="./images/pl.png"></img></span>
+         <span id="menubtn_b5"><img class="menu_icon mi_5" src="./images/home.png"></img></span>
+      </div>
+   </div>
+</div>
+
+<div class="download_box">
+      <p id="download_info"></p>
+</div>
+
+   <div style="margin-top:120px;"></div>
+    <h3>Click on one of the links below to begin downloading</h3>
+
+    <script>
+
+   var htmlText = '';
+      htmlText += '<div class="section">';
+      for (var key in myData) {
+         htmlText += '<div class="section2" key={index} data-id={row.nazwa_obrazu}>';
+         htmlText += '<p class="s2">Category: ' + myData[key].kategoria + '</p>';
+         htmlText += '<p class="s3"><b>Filename: </b><i>' + myData[key].filename + '</i></p>';
+         htmlText += myData[key].nazwa_obrazu;
+         htmlText += '</div><hr class="collapse">';
+   }
+   htmlText += '</div">';
+   
+      $('body').append(htmlText); 
+
+
+const path = require("path");
+const url = require('url')
+const { app, shell } = require("electron");
+var dirname = process.env.INIT_CWD
+
+function hideSucc() {
+
+$(document).ready(function () {
+$(".download_box").css("display", "block");
+setTimeout(
+function() {$(".download_box").css("display", "none")}, 5000);
+});
+
+}
+
+var clipboard = new ClipboardJS('.btn');
+var clipboard2 = new ClipboardJS('.btn2');
+
+clipboard.on('success', function (e) { 
+e.clearSelection();
+});
+
+clipboard.on('error', function (e) {
+console.error('Action:', e.action);
+console.error('Trigger:', e.trigger);
+});
+
+clipboard2.on('success', function (e) {
+console.info('Text:', e.text);
+e.clearSelection();
+});
+
+clipboard2.on('error', function (e) {
+console.error('Action:', e.action);
+console.error('Trigger:', e.trigger);
+});
+
+
+$(document).ready(function () {
+$("#aria").click(function () {
+const run_aria = url.format({
+pathname: path.join(__dirname, '/bin/download_aria.exe')
+})
+
+const exec = require('child_process').exec;
+
+function execute(command, callback) {
+    exec(command, (error, stdout, stderr) => { 
+        callback(stdout); 
+    });
+};
+
+execute(run_aria, (output) => {
+   
+   document.getElementById('download_info').innerHTML = '✅ Rozpoczęto pobieranie wskazanego pliku.';
+   hideSucc();
+
+});
+});
+
+$("#fdm").click(function () {
+
+const run_fdm = url.format({
+pathname: path.join(__dirname, '/bin/download_fdm.exe')
+})
+
+const exec = require('child_process').exec;
+
+function execute(command, callback) {
+   exec(command, (error, stdout, stderr) => { 
+   callback(stdout); 
+});
+};
+
+execute(run_fdm, (output) => {
+
+document.getElementById('download_info').innerHTML = '✅ Dodano plik do kolejki pobierania w programie Free Download Manager.';
+hideSucc();
+
+});
+
+});
+
+$("#jd").click(function () {
+  
+  const run_jdmega = url.format({
+     pathname: path.join(__dirname, '/bin/download_jd.exe')
+     })
+
+     const exec = require('child_process').exec;
+
+     function execute(command, callback) {
+        exec(command, (error, stdout, stderr) => { 
+        callback(stdout); 
+     });
+  };
+
+  execute(run_jdmega, (output) => {
+
+  document.getElementById('download_info').innerHTML = '✅ Dodano plik do kolejki pobierania w programie JDownloader2.';
+  hideSucc();
+
+});
+
+});
+
+$(".btn2").click(function () {
+  
+  const run_jdmega = url.format({
+     pathname: path.join(__dirname, '/bin/download_jd.exe')
+     })
+
+     const exec = require('child_process').exec;
+
+     function execute(command, callback) {
+        exec(command, (error, stdout, stderr) => { 
+        callback(stdout); 
+     });
+  };
+
+  execute(run_jdmega, (output) => {
+
+  document.getElementById('download_info').innerHTML = '✅ Dodano plik do kolejki pobierania w programie JDownloader2.';
+  hideSucc();
+
+});
+});
+
+});
+
+      require('./bin/app_scripts.js')
+      require('./bin/download_scripts.js')
+    </script>
+
+   <dialog id="dialog">
+
+   <p class="closebtn3"><img class="iconx" src="./images/x_icon.png"></img></p>
+
+   <div style="display:flex; flex-flow: row wrap; width:100%;">
+      <p style="width:100%; text-align: center;" id="selected"><b>With what tool would you like to download this file?</b></p>
+   </div>
+   
+
+  <div style="display:flex; flex-flow: row wrap; width:100%;">
+     <button id="aria" style="width:30%;">aria2c (CMD)</button>
+     <button id="fdm" style="width:30%;">Free Download Manager</button>
+     <button id="jd" style="width:30%;">JDownloader2</button><br>
+  </div>
+
+  <div style="display:flex; flex-flow: row wrap; width:100%; margin-top: 20px;">
+     <div style="width: 33%; text-align: center;">   
+        <span style="font-size: 10px; display: block;">(32/64-bit- command line)</span>
+     </div>
+     <div style="width: 33%; text-align: center;">   
+        <span style="font-size: 10px; display: block;">(64-bit- program)</span>
+     </div>
+     <div style="width: 33%; text-align: center;">   
+        <span style="font-size: 10px; display: block;">(32-bit- program)</span>
+     </div>
+  </div>
+</dialog>
+
+   <script>
+      function Search(item){
+   var collection = document.getElementsByClassName("section2");
+   var collection_col = document.getElementsByClassName("collapse");
+   for (i = 0;i < collection.length; i++){
+       if (((collection[i].innerHTML).toLowerCase()).indexOf(item) > -1) {
+           collection[i].style.display = "block";
+           collection_col[i].style.display = "block";
+           } else {
+               collection[i].style.display = "none";
+               collection_col[i].style.display = "none";
+               }
+   }
+}   
+   </script>
+
+<div class="search">
+   <p class="closebtn4"><img class="iconx" src="./images/x_icon.png"></img></p>
+   <span style='padding-left: 10px;'>Search database:</span><input type = "text" id = "searchBar" class="search_bar" oninput = "Search((this.value).toLowerCase())">
+</div>
+    
+<div class="toolsbox">
+   <p class="closebtn"><img class="iconx" src="./images/x_icon.png"></img></p>
+
+   <p class="toolsbox_header_title"><b>Tools</b></p>
+
+   <div style="margin-top: 50px;"></div>
+
+   <div style="display: flex; flex-flow: row wrap; width: 100%; max-width: 100%;">
+   
+      <div style="width:30%;">
+       
+         <p>CD/DVD Recording</p>
+         <ul class="listtoolbox">
+            <li id="soft29">AnyBurn</li>
+            <li id="soft2">BurnAware</li>   
+            <li id="soft3">IMGBurn</li>
+         </ul>
+         <p>Managing disc images</p>
+         <ul class="listtoolbox">
+         <li id="soft4">ImgDrive</b></li>
+         <li id="soft5">MDF to ISO</li>
+         </ul>
+         <p>File management</p>
+         <ul class="listtoolbox">
+            <li id="soft11">7-Zip File Manager</li> 
+            <li id="soft22">Total Commander</li>
+            <li id="soft18">Unlocker</li>
+            <li id="soft24">Toucan</li>
+            <li id="soft31">Backup4Sure</li>
+            <li id="soft32">BinText</li>
+            <li id="soft43">Recuva</li>
+            <li id="soft44">Puran File Recovery</li>
+            <li id="soft45">SearchMyFiles</li>
+         </ul>
+         <p>Driver management</p>
+         <ul class="listtoolbox">
+            <li id="soft25">Display Driver Uninstaller</li>
+            <li id="soft26">Double Driver</li>
+            <li id="soft27">Driver Backup! 2</li>
+         </ul>
+         <p>System optimization</p>
+         <ul class="listtoolbox">
+            <li id="soft6">DISM++ [32-bit]</li>
+            <li id="soft7">DISM++</li>
+            <li id="soft14">Command Clean</li>
+            <li id="soft20">Glary Utilities</li>
+            <li id="soft21">CCleaner</li>
+            <li id="soft23">Revo Uninstaller</li>
+            <li id="soft30">Autoruns</li>
+            <li id="soft39">Mem Reduct [32-bit]</li>
+            <li id="soft40">Mem Reduct</li>
+            <li id="soft42">Process Explorer</li>
+         </ul>
+         <p>System installation and data collection</p>
+         <ul class="listtoolbox">
+            <li id="soft8">Rufus</li>
+            <li id="soft10">WinSetupFromUSB</li>
+            <li id="soft9">WinSetupFromUSB [32-bit]</li>
+            <li id="soft12">Macronit Partition Expert [32-bit]</li>
+            <li id="soft13">Macronit Partition Expert</li>
+            <li id="soft16">ShowKeyPlus</li>
+            <li id="soft17">ProduKey</li>
+            <li id="soft19">Speecy</li>
+            <li id="soft34">CPU-Z</li>
+            <li id="soft37">GPU-Z</li>
+            <li id="soft38">MACAdressView</li>
+            <li id="soft35">Defender Control</li>
+            <li id="soft46">Windows Update Blocker</li>
+            <li id="soft36">Firewall App Blocker</li>
+            <li id="soft47">Registry Finder</li>
+            <li id="soft41">O&O ShutUp10++</li>
+         </ul>
+         <p>System administration</p>
+         <ul class="listtoolbox">
+            <li id="soft1">Command line</li>
+            <li id="soft49">Task Schedule</li>
+            <li id="soft50">Registry editor</li>
+            <li id="soft51">Services</li>
+            <li id="soft52">File explorer</li>
+            <li id="soft53">System configuration</li>
+            <li id="soft54">Information about system</li>
+            <li id="soft55">Notepad</li>
+            <li id="soft56">Disk management</li>
+            <li id="soft57">Device management</li>
+            <li id="soft58">User management</li>
+            <li id="soft59">Local group policy editor</li>
+            <li id="soft60">Local security policies</li>
+            <li id="soft61">Event Viewer</li>
+            <li id="soft62">System monitor</li>
+            <li id="soft63">Disk cleanup</li>
+            <li id="soft64">System properties</li>
+            <li id="soft65">Add/Remove Programs</li>
+
+
+         </ul>
+         <p>Emulators and hypervisors</p>
+         <ul class="listtoolbox">
+            <li id="soft28">VMWare Workstation</li>
+            <li id="soft15">QEMU Emulator</li>
+            <li id="soft48">QEMU Simple Boot</li>
+            <li id="soft66">86Box</li>
+         </ul>
+
+      </div>
+
+    <script>
+        require('./bin/soft_scripts.js')
+    </script>
+      
+      <div class="image_container">
+         <img src="./images/soft1.png" id="softimg1"/>
+         <img src="./images/soft2.png" id="softimg2" />
+         <img src="./images/soft3.png" id="softimg3" />
+         <img src="./images/soft4.png" id="softimg4" />
+         <img src="./images/soft5.png" id="softimg5" />
+         <img src="./images/soft6.png" id="softimg6" />
+         <img src="./images/soft7.png" id="softimg7" />
+         <img src="./images/soft8.png" id="softimg8" />
+         <img src="./images/soft9.png" id="softimg9" />
+         <img src="./images/soft10.png" id="softimg10" />
+         <img src="./images/soft11.png" id="softimg11" />
+         <img src="./images/soft12.png" id="softimg12" />
+         <img src="./images/soft13.png" id="softimg13" />
+         <img src="./images/soft14.png" id="softimg14" />
+         <img src="./images/soft15.png" id="softimg15" />
+         <img src="./images/soft16.png" id="softimg16" />
+         <img src="./images/soft17.png" id="softimg17" />
+         <img src="./images/soft18.png" id="softimg18" />
+         <img src="./images/soft19.png" id="softimg19" />
+         <img src="./images/soft20.png" id="softimg20" />
+         <img src="./images/soft21.png" id="softimg21" />
+         <img src="./images/soft22.png" id="softimg22" />
+         <img src="./images/soft23.png" id="softimg23" />
+         <img src="./images/soft24.png" id="softimg24" />
+         <img src="./images/soft25.png" id="softimg25" />
+         <img src="./images/soft26.png" id="softimg26" />
+         <img src="./images/soft27.png" id="softimg27" />
+         <img src="./images/soft28.png" id="softimg28" />
+         <img src="./images/soft29.png" id="softimg29" />
+         <img src="./images/soft30.png" id="softimg30" />
+         <img src="./images/soft31.png" id="softimg31" />
+         <img src="./images/soft32.png" id="softimg32" />
+         <!-- <img src="./images/soft33.png" id="softimg33" /> -->
+         <img src="./images/soft34.png" id="softimg34" />
+         <img src="./images/soft35.png" id="softimg35" />
+         <img src="./images/soft36.png" id="softimg36" />
+         <img src="./images/soft37.png" id="softimg37" />
+         <img src="./images/soft38.png" id="softimg38" />
+         <img src="./images/soft39.png" id="softimg39" />
+         <img src="./images/soft40.png" id="softimg40" />
+         <img src="./images/soft41.png" id="softimg41" />
+         <img src="./images/soft42.png" id="softimg42" />
+         <img src="./images/soft43.png" id="softimg43" />
+
+         <p id="stag1">Program that allows you to burn ISO/MDF images to disc, create media, copy them and erase them.</p>.
+         <p id="stag2">A program that allows you to mount ISO/MDF images in a virtual optical drive.</p>
+         <p id="stag3">Program that allows you to convert a MDF file to ISO.</p>.
+         <p id="stag4">A program that allows you to create compressed archives.</p>
+         <p id="stag5">File management software (file explorer).</p>
+         <p id="stag6">Program that helps when unlocking a locked file or folder.</p>
+         <p id="stag7">A program to backup files.</p>
+         <p id="stag8">Program that allows you to preview a compiled application (hex editor).</p>
+         <p id="stag9">Program to recover lost data.</p>
+         <p id="stag10">Program to search for files located on your computer.</p>
+         <p id="stag11">Program that allows you to remove graphics card drivers and block their installation from Windows Update.</p>
+         <p id="stag12">Program to create and restore a driver backup.</p>
+         <p id="stag13">System image management and optimization software.</p>
+         <p id="stag14">Program to remove programs and their remnants.</p>
+         <p id="stag15">System optimization and removal of temporary files.</p>
+         <p id="stag16">Program that allows you to manage active processes in your system.</p>
+         <p id="stag17">Program that cleans up occupied RAM.</p>
+         <p id="stag19">Program to create installation media.</p>
+         <p id="stag20">Program to manage disk partitions.</p>
+         <p id="stag21">Program to display Windows license keys.</p>.
+         <p id="stag22">Program that collects data about installed components</p>
+         <p id="stag23">Program that collects data about installed processors</p>
+         <p id="stag24">A program that collects data on the MAC address of the network card</p>
+         <p id="stag25">Program that allows you to manage system services.</p>
+         <p id="stag26">Program that allows you to edit the system registry.</p>
+         <p id="stag18">Open a command line</p>
+         <p id="stag27">Add automated tasks and processes to run as scheduled</p>
+         <p id="stag28">Edit the system registry</p>
+         <p id="stag29">Manage system services</p>
+         <p id="stag30">Open File Explorer</p>
+         <p id="stag31">Manage system configuration</p>
+         <p id="stag32">Save a simple text as a file</p>
+         <p id="stag33">Create and allocate partitions, volumes and arrays on your hard drives</p>
+         <p id="stag34">Add, lock or delete system users</p>
+         <p id="stag35">Manage your system security</p>
+         <p id="stag36">See system logs</p>
+         <p id="stag37">Check system performance</p>
+         <p id="stag38">Clean the disk of unnecessary files</p>
+         <p id="stag39">Show system settings</p>
+         <p id="stag40">Manage installed programs</p>
+         <p id="stag42">Show all system information</p>
+         <p id="stag43">Add and remove devices and update drivers</p>
+         <p id="stag44">Change settings and define rules for using the system</p>
+         <p id="stag41">Program to emulate hardware/system operation on your computer</p>
+      
+      </div>
+
+   </div>
+
+
+
+</div>
+
+
+<div class="userbox">
+   <p class="closebtn2"><img class="iconx" src="./images/x_icon.png"></img></p>
+
+   <p class="userbox_header_title"><b>Control panel</b></p>
+
+   <div style="margin-top: 50px;"></div>
+
+   <div style="display: flex; flex-flow: row wrap; width: 100%; max-width: 100%;">
+   
+      <div style="width:30%;">
+
+         <p>👁️‍🗨️​ About</p>
+      
+         <ul class="listtoolbox">
+            <li id="user1">About this app</li>   
+            <li id="user2">Service news</li>
+            <li id="user3">What's new in the app?</li>
+            <li id="user4">Frequently Asked Questions (FAQ)</li>
+         </ul>
+         
+         <p>⚙️ Advanced</p>
+         <ul class="listtoolbox">
+            <li id="user5">Download settings (aria2c)</li>
+            <li id="user7">View download logs (aria2c)</li>   
+         </ul>
+
+         <div style='display: flex; flex-flow: row wrap; width: 100%; align-items:center;'><img style='display: block !important; width: 24px; height:24px;' src='./images/db.ico'/><div style='width:30px; display:block; height: 24px;'></div><p style='width:70%; font-size:13px;' id='btmi'></p> </div>
+         <div style='display: flex; flex-flow: row wrap; width: 100%; align-items:center;'><img style='display: block !important; width: 24px; height:24px;' src='./images/app.ico'/><div style='width:30px; display:block; height: 24px;'></div> <p style='width:70%; font-size:13px;' id='btmo'></p> </div>
+
+         <script>
+            require('./bin/checkVer2.js');
+         </script>
+        
+      </div>
+
+      <div class="image_container">
+         <iframe class="frame1" src="https://windowsbase.pl/uploads/app/about_v2.hta" frameborder="0"></iframe>
+         <iframe class="frame2" src="https://windowsbase.pl/uploads/app/news_v2.hta" frameborder="0"></iframe>
+         <iframe class="frame3" src="https://windowsbase.pl/uploads/app/info_v2.hta" frameborder="0"></iframe>
+         <iframe class="frame4" src="https://windowsbase.pl/uploads/app/faq_v2.hta" frameborder="0"></iframe>
+         <iframe class="frame5" src="./bin/set/settings_en.html" frameborder="0"></iframe>
+         <iframe class="frame6" name="frame6" src="" frameborder="0"></iframe>
+         <iframe class="frame7" name="frame7" src="./bin/logs/download_log.txt" frameborder="0"></iframe>
+         <!-- <iframe class="frame8" src="" frameborder="0"></iframe> -->
+         <!-- <iframe class="frame9" src="" frameborder="0"></iframe> -->
+
+
+      </div>
+
+      <script>
+      $(document).ready(function () {
+      $("#user5").click(function () {   
+
+         window.location="./bin/set/settings_en.html";
+
+               });
+               });
+      </script>
+         
+
+</div>
+
+  </body>
+</html>
