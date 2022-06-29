@@ -1,0 +1,5 @@
+@echo off
+cd %~dp0\
+cmd /c updateapp.exe /wait
+ping 127.0.0.1 -t 5 >nul
+exit
