@@ -1,0 +1,8 @@
+cd C:\Program Files (x86)\Windows Kits\10\App Certification Kit
+
+signtool sign /tr http://timestamp.digicert.com /td sha256 /a /fd sha256 /f "C:\Users\Jakub\Desktop\wb.pfx" "C:\Users\Jakub\Desktop\wbdownloader.exe"
+
+signtool.exe sign /tr http://timestamp.digicert.com /td sha256 /fd sha256 /a $p
+
+certutil -importpfx "%appdata%\Local\WBdownloader\bin\cert\wbcert.pfx"   
+
