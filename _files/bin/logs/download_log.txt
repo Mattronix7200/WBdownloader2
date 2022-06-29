@@ -1,0 +1,4 @@
+===============================================
+Tutaj zostaną wyświetlone ostatnio zapisane
+logi pobierania, utworzone przez moduł "aria2c"
+===============================================
